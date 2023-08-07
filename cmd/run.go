@@ -17,6 +17,7 @@ var (
 	outputDir     string
 	verbose       bool
 	showAnimation bool
+	blocking      bool
 	concurrency   int
 	annotations   *[]string
 )
@@ -86,6 +87,7 @@ func init() {
 	runCmd.Flags().StringVarP(&ioJsonCid, "ioJsonCid", "i", "", "IPFS CID of IO JSON")
 	runCmd.Flags().StringVarP(&outputDir, "outputDir", "o", "", "Output directory")
 	runCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "Enable verbose output")
+	runCmd.Flags().BoolVarP(&blocking, "blocking", "b", true, "Enable plex to block until job completion")
 	runCmd.Flags().BoolVarP(&showAnimation, "showAnimation", "", true, "Show job processing animation")
 	runCmd.Flags().IntVarP(&concurrency, "concurrency", "c", 1, "Number of concurrent operations")
 	annotations = runCmd.Flags().StringArrayP("annotations", "a", []string{}, "Annotations to add to Bacalhau job")
