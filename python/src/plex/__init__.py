@@ -157,8 +157,12 @@ def plex_create(tool_path: str, input_dir: str, layers=2, output_dir="", verbose
     return io_json_cid
 
 
-def plex_run(io_json_cid: str, output_dir="", verbose=False, show_animation=False, concurrency="1", annotations=[], plex_path="plex"):
+def plex_run(io_json_cid: str, output_dir="", verbose=False, show_animation=False, concurrency="1", annotations=[], blocking=True, plex_path="plex"):
+    if blocking is False:
+        print("async mode is in development mode, you may notice an increase in error messages")
+
     cwd = os.getcwd()
+
     # plex_work_dir = os.environ.get("PLEX_WORK_DIR", os.path.dirname(os.path.dirname(cwd)))
     plex_work_dir = os.environ.get("PLEX_WORK_DIR", os.path.dirname(cwd))
     cmd = [plex_path, "run", "-i", io_json_cid]
@@ -177,6 +181,9 @@ def plex_run(io_json_cid: str, output_dir="", verbose=False, show_animation=Fals
 
     if not show_animation: # default is true in the CLI
         cmd.append("--showAnimation=false")
+
+    if not blocking:
+        cmd.append("--blocking=false")
 
     with subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=1, universal_newlines=True, cwd=plex_work_dir) as p:
         io_json_cid = ""
